@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="The Storm's Alibi by John W. Taggart — Galveston, September 1900. The storm became his alibi. And hers." />
+  <meta name="description" content="The Storm's Alibi by John W. Taggart — a historical thriller set in the hours before the 1900 Galveston Hurricane. She killed him on the morning of the storm. By nightfall the evidence was gone." />
   <title>The Storm's Alibi — John W. Taggart</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,14 +12,15 @@
   <style>
     :root {
       --bg:          #080c08;
+      --bg-2:        #0c110c;
       --gold:        #c9a84c;
       --gold-dim:    #a07c2e;
       --olive:       #7a8c4a;
       --text:        #ddd8c4;
       --text-muted:  #9a9080;
       --text-dim:    #3e3c34;
-      --border:      #1e2018;
-      --border-gold: rgba(201,168,76,0.2);
+      --border:      rgba(255,255,255,0.08);
+      --border-gold: rgba(201,168,76,0.25);
 
       --serif-display: 'Cormorant Garamond', Georgia, serif;
       --serif-body:    'Crimson Pro', Georgia, serif;
@@ -37,315 +38,211 @@
       line-height: 1.7;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
-      min-height: 100vh;
     }
 
-    /* Grain overlay */
     body::after {
       content: '';
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 500;
-      opacity: 0.03;
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 500; opacity: 0.03;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
       background-size: 200px 200px;
     }
 
     a { color: inherit; text-decoration: none; }
 
-    /* FULL BLEED BG */
     .page-bg {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      background-image: url('tsa-bg.webp');
+      position: fixed; inset: 0; z-index: 0;
+      background-image: url('tsa-cover.png');
       background-size: contain;
       background-position: right center;
       background-repeat: no-repeat;
       background-color: #080c08;
     }
-
-    /* Gradient overlay — heavy left, lighter right so the figure breathes */
     .page-bg::after {
-      content: '';
-      position: absolute;
-      inset: 0;
+      content: ''; position: absolute; inset: 0;
       background:
-        linear-gradient(to right,
-          rgba(8,12,8,0.97) 0%,
-          rgba(8,12,8,0.85) 35%,
-          rgba(8,12,8,0.3) 60%,
-          rgba(8,12,8,0.1) 100%),
-        linear-gradient(to bottom,
-          rgba(8,12,8,0.4) 0%,
-          rgba(8,12,8,0.0) 20%,
-          rgba(8,12,8,0.0) 70%,
-          rgba(8,12,8,0.95) 100%);
+        linear-gradient(to right, rgba(8,12,8,0.97) 0%, rgba(8,12,8,0.85) 35%, rgba(8,12,8,0.3) 60%, rgba(8,12,8,0.1) 100%),
+        linear-gradient(to bottom, rgba(8,12,8,0.4) 0%, rgba(8,12,8,0.0) 20%, rgba(8,12,8,0.0) 70%, rgba(8,12,8,0.95) 100%);
     }
 
     /* NAV */
     nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 200;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
       padding: 1.5rem 2.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      display: flex; justify-content: space-between; align-items: center;
       background: linear-gradient(to bottom, rgba(8,12,8,0.85) 0%, transparent 100%);
     }
-
     .nav-author {
-      font-family: var(--sans);
-      font-size: 0.62rem;
-      font-weight: 300;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--text-muted);
+      font-family: var(--sans); font-size: 0.62rem; font-weight: 300;
+      letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-muted);
       transition: color 0.25s;
     }
     .nav-author:hover { color: var(--gold); }
-
-    .nav-label {
-      font-family: var(--sans);
-      font-size: 0.58rem;
-      font-weight: 300;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--text-dim);
+    .nav-cta {
+      font-family: var(--sans); font-size: 0.58rem; font-weight: 400;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold);
+      border: 1px solid var(--border-gold); padding: 0.5rem 1rem; border-radius: 2px;
+      transition: all 0.25s;
     }
+    .nav-cta:hover { background: var(--gold); color: var(--bg); }
 
-    /* HERO — text sits left, image breathes right */
-    .hero {
-      min-height: 100vh;
-      position: relative;
-      z-index: 1;
-      display: flex;
-      align-items: center;
-      padding: 8rem 0 5rem;
-    }
-
-    .hero-text {
-      max-width: 520px;
-      padding: 0 0 0 5vw;
-    }
-
+    /* HERO */
+    .hero { min-height: 100vh; position: relative; z-index: 1; display: flex; align-items: center; padding: 8rem 0 5rem; }
+    .hero-text { max-width: 540px; padding: 0 0 0 5vw; }
     .hero-eyebrow {
-      font-family: var(--sans);
-      font-size: 0.6rem;
-      font-weight: 300;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--olive);
-      margin-bottom: 1.2rem;
-      display: block;
+      font-family: var(--sans); font-size: 0.6rem; font-weight: 300;
+      letter-spacing: 0.3em; text-transform: uppercase; color: var(--olive);
+      margin-bottom: 1.2rem; display: block;
     }
-
     .hero-location {
-      font-family: var(--serif-display);
-      font-size: clamp(0.95rem, 1.6vw, 1.15rem);
-      font-style: italic;
-      color: var(--text-muted);
-      margin-bottom: 1.2rem;
-      display: block;
+      font-family: var(--serif-display); font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+      font-style: italic; color: var(--text-muted); margin-bottom: 1.2rem; display: block;
     }
-
-    .hero-title {
-      font-family: var(--serif-display);
-      font-weight: 300;
-      line-height: 0.95;
-      color: var(--text);
-      margin-bottom: 1rem;
-    }
-
+    .hero-title { font-family: var(--serif-display); font-weight: 300; line-height: 0.95; color: var(--text); margin-bottom: 1rem; }
     .hero-title .the {
-      font-size: clamp(1rem, 2vw, 1.3rem);
-      display: block;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      font-weight: 300;
-      margin-bottom: 0.3rem;
+      font-size: clamp(1rem, 2vw, 1.3rem); display: block; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--text-muted); font-weight: 300; margin-bottom: 0.3rem;
     }
-
-    .hero-title .main {
-      font-size: clamp(3rem, 5.5vw, 4.5rem);
-      display: block;
-    }
-
+    .hero-title .main { font-size: clamp(3rem, 5.5vw, 4.5rem); display: block; }
     .hero-author {
-      font-family: var(--sans);
-      font-size: 0.68rem;
-      font-weight: 300;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--gold);
-      opacity: 0.85;
-      margin-bottom: 2rem;
-      display: block;
+      font-family: var(--sans); font-size: 0.68rem; font-weight: 300; letter-spacing: 0.25em;
+      text-transform: uppercase; color: var(--gold); opacity: 0.85; margin-bottom: 1.6rem; display: block;
     }
-
-    .hero-rule {
-      width: 50px;
-      height: 1px;
-      background: linear-gradient(to right, var(--gold), transparent);
-      margin-bottom: 2rem;
-      opacity: 0.5;
+    .hero-rule { width: 50px; height: 1px; background: linear-gradient(to right, var(--gold), transparent); margin-bottom: 1.8rem; opacity: 0.5; }
+    .hero-hook {
+      font-family: var(--serif-display); font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+      font-style: italic; color: var(--text); line-height: 1.4; margin-bottom: 1.4rem;
     }
-
-    .hero-synopsis {
-      font-size: 0.97rem;
-      line-height: 1.9;
-      color: var(--text-muted);
-      margin-bottom: 0.5rem;
-    }
-
-    .hero-synopsis p + p { margin-top: 1rem; }
-
+    .hero-synopsis { font-size: 0.97rem; line-height: 1.9; color: var(--text-muted); }
     .hero-kicker {
-      font-family: var(--serif-display);
-      font-size: clamp(1rem, 1.8vw, 1.2rem);
-      font-style: italic;
-      color: var(--text);
-      margin-top: 1.2rem;
-      line-height: 1.5;
+      font-family: var(--serif-display); font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+      font-style: italic; color: var(--gold); margin-top: 1.2rem; line-height: 1.5; opacity: 0.9;
     }
+    .hero-actions { margin-top: 2.2rem; display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+    .btn-primary {
+      font-family: var(--sans); font-size: 0.62rem; font-weight: 400; letter-spacing: 0.18em;
+      text-transform: uppercase; background: var(--gold); color: var(--bg);
+      padding: 0.9rem 1.6rem; border-radius: 2px; transition: background 0.25s; cursor: pointer; border: none;
+    }
+    .btn-primary:hover { background: #e8c468; }
+    .btn-ghost {
+      font-family: var(--sans); font-size: 0.62rem; font-weight: 400; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--text-muted); border: 1px solid var(--border);
+      padding: 0.9rem 1.4rem; border-radius: 2px; transition: all 0.25s;
+    }
+    .btn-ghost:hover { color: var(--gold); border-color: var(--border-gold); }
+    .hero-countdown {
+      margin-top: 1.8rem; font-family: var(--sans); font-size: 0.62rem; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--text-dim);
+    }
+    .hero-countdown strong { color: var(--olive); font-weight: 400; }
+
+    /* GENERIC SECTION */
+    .section { position: relative; z-index: 1; background: var(--bg); padding: 6.5rem 5vw; }
+    .section.alt { background: var(--bg-2); }
+    .section-inner { max-width: 860px; margin: 0 auto; }
+    .section-eyebrow {
+      font-family: var(--sans); font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--olive); display: block; margin-bottom: 1.4rem;
+    }
+    .section-h {
+      font-family: var(--serif-display); font-weight: 300; font-size: clamp(1.8rem, 3.6vw, 2.8rem);
+      line-height: 1.1; color: var(--text); margin-bottom: 1.6rem;
+    }
+    .section p { color: var(--text-muted); font-size: 1.02rem; line-height: 1.85; margin-bottom: 1.1rem; }
+    .section p:last-child { margin-bottom: 0; }
+
+    .pullquote {
+      font-family: var(--serif-display); font-style: italic; font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+      line-height: 1.35; color: var(--gold); text-align: center; margin: 3rem auto; max-width: 760px; opacity: 0.92;
+    }
+
+    /* COMPS */
+    .comps-list { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem 2.5rem; margin-top: 2rem; }
+    .comp { border-left: 1px solid var(--border-gold); padding-left: 1.2rem; }
+    .comp-title { font-family: var(--serif-display); font-style: italic; font-size: 1.25rem; color: var(--text); }
+    .comp-author { font-family: var(--sans); font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-dim); margin-top: 0.3rem; }
+
+    /* COMPANION */
+    .companion-grid { display: grid; grid-template-columns: 280px 1fr; gap: 3rem; align-items: center; }
+    .companion-card {
+      aspect-ratio: 3/4; border: 1px solid var(--border-gold); border-radius: 3px;
+      background: linear-gradient(160deg, #141a14 0%, #0a0e0a 100%);
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      padding: 2rem; text-align: center; box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+    }
+    .companion-card .cc-kicker { font-family: var(--sans); font-size: 0.55rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--olive); margin-bottom: 1.2rem; }
+    .companion-card .cc-title { font-family: var(--serif-display); font-size: 1.55rem; font-style: italic; color: var(--gold); line-height: 1.25; }
+    .companion-card .cc-rule { width: 36px; height: 1px; background: var(--gold-dim); margin: 1.2rem 0; opacity: 0.6; }
+    .companion-card .cc-sub { font-family: var(--sans); font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); }
 
     /* NOTIFY FORM */
-    .notify-wrap {
-      margin-top: 2.5rem;
-    }
-
-    .notify-label {
-      font-family: var(--sans);
-      font-size: 0.6rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      margin-bottom: 0.8rem;
-      display: block;
-    }
-
-    .notify-form {
-      display: flex;
-      gap: 0;
-      max-width: 400px;
-    }
-
+    .notify-wrap { margin-top: 1.8rem; }
+    .notify-label { font-family: var(--sans); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 0.8rem; display: block; }
+    .notify-form { display: flex; gap: 0; max-width: 420px; }
     .notify-form input {
-      flex: 1;
-      background: rgba(8,12,8,0.7);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-right: none;
-      color: var(--text);
-      font-family: var(--serif-body);
-      font-size: 0.9rem;
-      padding: 0.85rem 1rem;
-      outline: none;
-      transition: border-color 0.25s;
-      backdrop-filter: blur(4px);
+      flex: 1; background: rgba(8,12,8,0.7); border: 1px solid rgba(255,255,255,0.12); border-right: none;
+      color: var(--text); font-family: var(--serif-body); font-size: 0.95rem; padding: 0.85rem 1rem;
+      outline: none; transition: border-color 0.25s;
     }
     .notify-form input::placeholder { color: var(--text-dim); }
     .notify-form input:focus { border-color: var(--olive); }
-
     .notify-form button {
-      background: var(--gold);
-      color: var(--bg);
-      border: none;
-      font-family: var(--sans);
-      font-size: 0.6rem;
-      font-weight: 300;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      padding: 0.85rem 1.4rem;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: background 0.25s;
+      background: var(--gold); color: var(--bg); border: none; font-family: var(--sans);
+      font-size: 0.6rem; font-weight: 400; letter-spacing: 0.18em; text-transform: uppercase;
+      padding: 0.85rem 1.4rem; cursor: pointer; white-space: nowrap; transition: background 0.25s;
     }
     .notify-form button:hover { background: #e8c468; }
+    .notify-msg { display: none; font-family: var(--sans); font-size: 0.72rem; letter-spacing: 0.06em; color: var(--gold); margin-top: 0.8rem; }
+    .notify-disclaimer { font-family: var(--sans); font-size: 0.6rem; letter-spacing: 0.06em; color: var(--text-dim); margin-top: 0.7rem; }
 
-    #notify-msg {
-      display: none;
-      font-family: var(--sans);
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
-      color: var(--gold);
-      margin-top: 0.7rem;
+    /* AUTHOR */
+    .author-grid { display: grid; grid-template-columns: 160px 1fr; gap: 2.5rem; align-items: start; }
+    .author-photo {
+      width: 160px; height: 160px; border-radius: 3px; border: 1px solid var(--border);
+      background: #11160f url('author_photo.png') center 25%/cover no-repeat;
     }
 
-    .notify-disclaimer {
-      font-family: var(--sans);
-      font-size: 0.6rem;
-      letter-spacing: 0.08em;
-      color: var(--text-dim);
-      margin-top: 0.6rem;
+    /* BUY / LINKS */
+    .buy-buttons { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 1.8rem; }
+    .buy-btn {
+      font-family: var(--sans); font-size: 0.62rem; font-weight: 400; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--text); border: 1px solid var(--border); padding: 0.85rem 1.3rem; border-radius: 2px; transition: all 0.25s;
     }
+    .buy-btn:hover { color: var(--gold); border-color: var(--border-gold); }
+    .buy-note { font-family: var(--sans); font-size: 0.6rem; letter-spacing: 0.08em; color: var(--text-dim); margin-top: 1.2rem; }
+    .social-row { display: flex; gap: 1.6rem; margin-top: 1.6rem; }
+    .social-row a { font-family: var(--sans); font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-muted); transition: color 0.25s; }
+    .social-row a:hover { color: var(--gold); }
 
     /* FOOTER */
-    footer {
-      position: relative;
-      z-index: 1;
-      border-top: 1px solid rgba(255,255,255,0.06);
-      padding: 1.8rem 0;
-      background: rgba(8,12,8,0.85);
-      backdrop-filter: blur(4px);
-    }
-
-    .footer-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 5vw;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-
-    .footer-copy {
-      font-family: var(--sans);
-      font-size: 0.6rem;
-      letter-spacing: 0.1em;
-      color: var(--text-dim);
-    }
-
-    .footer-home {
-      font-family: var(--sans);
-      font-size: 0.6rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      transition: color 0.2s;
-    }
+    footer { position: relative; z-index: 1; border-top: 1px solid var(--border); padding: 2rem 5vw; background: var(--bg); }
+    .footer-inner { max-width: 860px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .footer-copy { font-family: var(--sans); font-size: 0.6rem; letter-spacing: 0.1em; color: var(--text-dim); }
+    .footer-home { font-family: var(--sans); font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-dim); transition: color 0.2s; }
     .footer-home:hover { color: var(--gold); }
 
     /* ANIMATIONS */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     .fade-up { animation: fadeUp 0.9s ease both; }
-    .delay-1 { animation-delay: 0.1s; }
-    .delay-2 { animation-delay: 0.25s; }
-    .delay-3 { animation-delay: 0.4s; }
-    .delay-4 { animation-delay: 0.6s; }
-    .delay-5 { animation-delay: 0.8s; }
+    .delay-1 { animation-delay: 0.1s; } .delay-2 { animation-delay: 0.25s; }
+    .delay-3 { animation-delay: 0.4s; } .delay-4 { animation-delay: 0.6s; } .delay-5 { animation-delay: 0.8s; }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
 
-    /* MOBILE */
     @media (max-width: 768px) {
-      .page-bg::after {
-        background: rgba(8,12,8,0.88);
-      }
-      .hero-text {
-        max-width: 100%;
-        padding: 0 1.5rem;
-        text-align: center;
-      }
-      .hero-rule { margin: 0 auto 2rem; }
+      .page-bg::after { background: rgba(8,12,8,0.9); }
+      .hero-text { max-width: 100%; padding: 0 1.5rem; text-align: center; }
+      .hero-rule { margin: 0 auto 1.8rem; }
+      .hero-actions { justify-content: center; }
       .notify-form { max-width: 100%; }
-      .notify-form input { border-right: 1px solid rgba(255,255,255,0.1); border-bottom: none; }
+      .notify-form input { border-right: 1px solid rgba(255,255,255,0.12); }
+      .comps-list { grid-template-columns: 1fr; }
+      .companion-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .companion-card { max-width: 240px; margin: 0 auto; }
+      .author-grid { grid-template-columns: 1fr; }
+      .author-photo { margin: 0 auto; }
+      nav { padding: 1.2rem 1.5rem; }
     }
   </style>
 </head>
@@ -355,12 +252,13 @@
 
   <nav>
     <a href="https://www.johnwtaggart.com" class="nav-author">John W. Taggart</a>
-    <span class="nav-label">Historical Fiction</span>
+    <a href="#companion" class="nav-cta">Free Companion</a>
   </nav>
 
+  <!-- ===== HERO ===== -->
   <main class="hero">
     <div class="hero-text">
-      <span class="hero-eyebrow fade-up">Coming Soon</span>
+      <span class="hero-eyebrow fade-up">A Novel · Coming September 8, 2026</span>
       <span class="hero-location fade-up delay-1">Galveston, Texas · September 1900</span>
 
       <h1 class="hero-title fade-up delay-2">
@@ -369,59 +267,170 @@
       </h1>
 
       <span class="hero-author fade-up delay-2">John W. Taggart</span>
-
       <div class="hero-rule fade-up delay-3"></div>
 
-      <div class="hero-synopsis fade-up delay-4">
-        <p>Clara Whitaker followed her husband south with ledgers in her head and suspicion in her chest. She expected to find evidence of financial ruin. She found something worse.</p>
-        <p>On the morning of September 8, she walked through rising floodwater to his hotel room. He opened the door holding flowers meant for another woman. By nightfall, the deadliest hurricane in American history had swallowed the island whole. Eight thousand people were dead. Charles Whitaker was counted among them.</p>
-        <p class="hero-kicker">The storm became his alibi. And hers.</p>
-      </div>
+      <p class="hero-hook fade-up delay-3">She killed her husband on the morning of the storm. By nightfall, the deadliest hurricane in American history had taken the evidence — and six thousand souls — with it.</p>
 
-      <div class="notify-wrap fade-up delay-5">
-        <span class="notify-label">Get notified when available</span>
-        <form class="notify-form" onsubmit="handleNotify(event)">
-          <input type="email" id="notify-email" placeholder="your@email.com" required autocomplete="email" />
-          <button type="submit">Notify Me</button>
-        </form>
-        <p id="notify-msg">You're on the list. Thank you.</p>
-        <p class="notify-disclaimer">No spam. Unsubscribe any time.</p>
+      <p class="hero-synopsis fade-up delay-4">A slow-burn historical thriller set in the last hours of old Galveston, where one woman's crime vanishes as completely as the city around her — and the few who survive begin to ask what the water was really covering.</p>
+
+      <p class="hero-kicker fade-up delay-4">The storm became his alibi. And hers.</p>
+
+      <div class="hero-actions fade-up delay-5">
+        <a href="#companion" class="btn-primary">Read the true history — free</a>
+        <a href="#story" class="btn-ghost">The real storm</a>
       </div>
+      <div class="hero-countdown fade-up delay-5" id="countdown"></div>
     </div>
   </main>
+
+  <!-- ===== THE TRUE STORY ===== -->
+  <section class="section" id="story">
+    <div class="section-inner reveal">
+      <span class="section-eyebrow">The disaster America forgot</span>
+      <h2 class="section-h">It really happened. That's what makes it unbearable.</h2>
+      <p>On September 8, 1900, the deadliest natural disaster in American history came ashore at Galveston. In a single night, the storm killed as many as twelve thousand people — and most Americans have never heard of it. There was no seawall. There was barely a warning. By morning, a third of the city simply wasn't there.</p>
+      <p><em>The Storm's Alibi</em> lives inside that catastrophe — not as backdrop, but as engine. Clara Whitaker comes to Galveston to confront a husband who has betrayed her in every way a man can. What she does in a room at the Tremont Hotel, she is certain the rising water will bury for her. It almost does.</p>
+      <div class="pullquote">By nightfall the island was gone.<br>So was the evidence.</div>
+      <p>But the storm leaves witnesses. A woman who survived. A policeman who finds a wound that doesn't match the debris. And a city that will spend a century not knowing what the water was really covering.</p>
+    </div>
+  </section>
+
+  <!-- ===== COMPS / POSITIONING ===== -->
+  <section class="section alt">
+    <div class="section-inner reveal">
+      <span class="section-eyebrow">If these are your shelf</span>
+      <h2 class="section-h">For readers who want the history true and the tension real.</h2>
+      <p>A literary historical thriller with the moral complexity of the books below — and the disaster-as-engine structure of Robert Harris's <em>Pompeii</em>.</p>
+      <div class="comps-list">
+        <div class="comp"><div class="comp-title">The Frozen River</div><div class="comp-author">Ariel Lawhon</div></div>
+        <div class="comp"><div class="comp-title">The Diamond Eye</div><div class="comp-author">Kate Quinn</div></div>
+        <div class="comp"><div class="comp-title">Isaac's Storm</div><div class="comp-author">Erik Larson</div></div>
+        <div class="comp"><div class="comp-title">Pompeii</div><div class="comp-author">Robert Harris</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COMPANION / SIGNUP ===== -->
+  <section class="section" id="companion">
+    <div class="section-inner reveal">
+      <div class="companion-grid">
+        <div class="companion-card">
+          <div class="cc-kicker">Free Reader's Companion</div>
+          <div class="cc-title">The Tremont, the Tide, and the Six Thousand</div>
+          <div class="cc-rule"></div>
+          <div class="cc-sub">The true history behind the novel</div>
+        </div>
+        <div>
+          <span class="section-eyebrow">Start with the truth</span>
+          <h2 class="section-h">Read the real storm first.</h2>
+          <p>Get <em>The Tremont, the Tide, and the Six Thousand</em> — a free companion to the actual 1900 hurricane behind the novel. The history, a walk through Clara's Galveston, and where to go deeper. Sent straight to your inbox.</p>
+          <div class="notify-wrap">
+            <span class="notify-label">Free Reader's Companion — the true history</span>
+            <form class="notify-form" onsubmit="handleNotify(event)">
+              <input type="email" placeholder="your@email.com" required autocomplete="email" />
+              <button type="submit">Send It</button>
+            </form>
+            <p class="notify-msg">Almost there — check your inbox to confirm, and the companion is yours.</p>
+            <p class="notify-disclaimer">The real history behind the novel, free — plus word when the book arrives. No spam.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== AUTHOR ===== -->
+  <section class="section alt">
+    <div class="section-inner reveal">
+      <span class="section-eyebrow">The author</span>
+      <div class="author-grid">
+        <div class="author-photo" role="img" aria-label="John W. Taggart"></div>
+        <div>
+          <h2 class="section-h" style="margin-bottom:1.1rem;">John W. Taggart</h2>
+          <p>John writes fiction built on real history and real science. He lives on Tiki Island — a man-made island a few miles up the bay from Galveston, within sight of the water that drowned the island in 1900. <em>The Storm's Alibi</em> is his first historical novel; he also writes the Protocol techno-thrillers.</p>
+          <p style="font-style:italic; color:var(--text);">Different shelves, same question: what really happened, and what would it cost to know?</p>
+          <div class="social-row">
+            <a href="https://www.instagram.com/jwtaggartbooks/" target="_blank" rel="noopener">Instagram</a>
+            <a href="https://www.facebook.com/profile.php?id=61572154876379" target="_blank" rel="noopener">Facebook</a>
+            <a href="https://x.com/JWTaggartBooks" target="_blank" rel="noopener">X</a>
+            <a href="https://www.bookbub.com/authors/john-w-taggart" target="_blank" rel="noopener">BookBub</a>
+            <!-- REPLACE when you have the URL -->
+            <a href="#REPLACE_GOODREADS_AUTHOR" target="_blank" rel="noopener">Goodreads</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PRE-ORDER / FIND THE BOOK ===== -->
+  <section class="section" id="preorder">
+    <div class="section-inner reveal">
+      <span class="section-eyebrow">September 8, 2026</span>
+      <h2 class="section-h">Pre-order the ebook.</h2>
+      <p>Available now for pre-order on Amazon, delivered to your Kindle on launch day. More stores open as their pre-orders go live.</p>
+      <div class="buy-buttons">
+        <a href="https://www.amazon.com/dp/B0H5MH3Z24" target="_blank" rel="noopener" class="buy-btn">Pre-order on Amazon</a>
+        <!-- REPLACE href values when these stores open pre-orders -->
+        <a href="#REPLACE_BARNES_NOBLE" class="buy-btn">Barnes &amp; Noble</a>
+        <a href="#REPLACE_APPLE_BOOKS" class="buy-btn">Apple Books</a>
+        <a href="#REPLACE_KOBO" class="buy-btn">Kobo</a>
+        <a href="#REPLACE_GOODREADS_BOOK" class="buy-btn">★ Add on Goodreads</a>
+      </div>
+      <p class="buy-note">Pre-orders all deliver on September 8, 2026. The other stores join as their links go live.</p>
+    </div>
+  </section>
 
   <footer>
     <div class="footer-inner">
       <span class="footer-copy">&copy; 2026 John W. Taggart. All rights reserved.</span>
-      <a href="https://www.johnwtaggart.com" class="footer-home">← johnwtaggart.com</a>
+      <a href="https://www.johnwtaggart.com" class="footer-home">johnwtaggart.com</a>
     </div>
   </footer>
 
   <script>
+    // ---- Launch countdown ----
+    (function () {
+      const launch = new Date('2026-09-08T00:00:00');
+      const el = document.getElementById('countdown');
+      const days = Math.ceil((launch - new Date()) / 86400000);
+      if (!el) return;
+      el.innerHTML = days > 0
+        ? '<strong>' + days + ' days</strong> until September 8, 2026'
+        : 'Available now';
+    })();
+
+    // ---- Scroll reveal ----
+    (function () {
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+      }, { threshold: 0.15 });
+      document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+    })();
+
+    // ---- Signup: posts to MailerLite's PUBLIC form endpoint (no API key, nothing secret) ----
+    // Routes into "The Storm's Alibi — Readers" (form 190555647852414154, account 2185750),
+    // triggering the double opt-in + welcome email that delivers the Reader's Companion.
     async function handleNotify(e) {
       e.preventDefault();
-      const email = document.getElementById('notify-email').value;
-      const btn = e.target.querySelector('button');
+      const form = e.target;
+      const input = form.querySelector('input[type=email]');
+      const btn = form.querySelector('button');
+      const msg = form.parentNode.querySelector('.notify-msg');
       btn.textContent = 'Sending...';
       btn.disabled = true;
       try {
-        const res = await fetch('https://connect.mailerlite.com/api/subscribers', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiYTJiMjQ5ODEyZDM1M2VhZjNiOTI2ZjFjYzcwZTQ4YjA0MGJjMzJjNGEyYjE2MzhiY2Q3OTY0ZWJiM2E3NmVhMTI4YzRkMzhmYmJkMWE1NGYiLCJpYXQiOjE3NzMzOTc4NDQuNTAyMDExLCJuYmYiOjE3NzMzOTc4NDQuNTAyMDEzLCJleHAiOjQ5MjkwNzE0NDQuNDk1MjUsInN1YiI6IjIyMDUyNzUiLCJzY29wZXMiOltdfQ.r7K6iT6RGcKoiFY75xqIS5onmL7yHXRQ2LF8pjQzguERJNSGQBHn2-F9bZOiPxEEiqRNUqvGrpCovdHEa52RzGFLjxGL5jLbuw6xUEPSlGt1kgMlRibot3C31f6K0g_pxtFKlDn2RdUb1txhg6GDcpn_hgox8y5wviB99fHdzu1zujiPwICiDM3WOwpSxRCeIFzJ1ZqPSkZqQZaC01VzocLo2cfjSsyg2hMzbXIOUvXYnCNywAkhH_4fr_TN_FEr9-FN3wV7XaitvHIKoY0weZNPZ43sOn1Di84rclc7qubbqjgW9IBqwpL_tlcJ4tjm2tPzWj-dYSRCMyfsve35gX-Avp_SYbGuMVajG2AdPwdqoJsKxyB3M_WKB4d3HoaubTPpIhAi4KdmDytavMIKvpSd9Xm65A8Bf0APn940Tiy0AwRpGg2Xuhz0m83mTjcMdSt-OfmUgDWc6PcCxpxSCv9sY2L_l-_gUk4-MFnGP-U5N-nZrsPpI4GKnbQWG7v8v2enY_Q7R_d65IwANAfya-7_869bNFhnA1QA8uJg-Xzbb6ccWBJWpP7iWkkNgqkxq2RzO6Uh-h3xLlSLWopIKdEvXeJ63M0EeHzdf_x4w2ZakNQDFgF3FGxxzV_4jrSnpMFzmeo8MInPV82t_bn--a3zjsFJwYHSRPdOszAWxbU'
-          },
-          body: JSON.stringify({ email: email, groups: ['181820865412859816'] })
+        const body = new URLSearchParams();
+        body.append('fields[email]', input.value);
+        body.append('ml-submit', '1');
+        body.append('anticsrf', 'true');
+        await fetch('https://assets.mailerlite.com/jsonp/2185750/forms/190555647852414154/subscribe', {
+          method: 'POST', mode: 'no-cors',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: body.toString()
         });
-        if (res.status === 200 || res.status === 201) {
-          document.getElementById('notify-msg').style.display = 'block';
-          document.getElementById('notify-email').value = '';
-          btn.textContent = 'Done!';
-        } else {
-          btn.textContent = 'Try again';
-          btn.disabled = false;
-        }
-      } catch(err) {
+        if (msg) msg.style.display = 'block';
+        input.value = '';
+        btn.textContent = 'Sent.';
+      } catch (err) {
         btn.textContent = 'Try again';
         btn.disabled = false;
       }
